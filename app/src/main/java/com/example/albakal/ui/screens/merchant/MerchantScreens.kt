@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DeliveryDining
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.LocalShipping
@@ -92,6 +93,7 @@ import com.example.albakal.data.model.OrderStatus
 import com.example.albakal.data.model.ProductCategory
 import com.example.albakal.data.model.UserSession
 import com.example.albakal.ui.AlBaqalViewModel
+import com.example.albakal.ui.common.ApkDownloadDialog
 import com.example.albakal.ui.common.MerchantHonorCodeDialog
 import com.example.albakal.ui.common.OrderStatusBadge
 import com.example.albakal.ui.common.StatCard
@@ -106,6 +108,7 @@ fun MerchantContainerScreen(
 ) {
     var selectedBottomNav by remember { mutableIntStateOf(0) }
     var showLogoutConfirm by remember { mutableStateOf(false) }
+    var showApkDialog by remember { mutableStateOf(false) }
 
     val isHonorCodeAccepted by viewModel.isHonorCodeAccepted.collectAsStateWithLifecycle()
     val hasPendingSoundAlert by viewModel.hasPendingSoundAlert.collectAsStateWithLifecycle()
@@ -165,6 +168,16 @@ fun MerchantContainerScreen(
                     }
                 },
                 actions = {
+                    IconButton(
+                        onClick = { showApkDialog = true },
+                        modifier = Modifier.testTag("merchant_apk_top")
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Download,
+                            contentDescription = "APK",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                     IconButton(
                         onClick = { showLogoutConfirm = true },
                         modifier = Modifier.testTag("merchant_logout_top")
@@ -285,6 +298,10 @@ fun MerchantContainerScreen(
                 }
             }
         )
+    }
+
+    if (showApkDialog) {
+        ApkDownloadDialog(onDismiss = { showApkDialog = false })
     }
 }
 

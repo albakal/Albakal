@@ -20,6 +20,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.Home
@@ -71,6 +72,7 @@ import com.example.albakal.data.model.UserRole
 import com.example.albakal.ui.AlBaqalViewModel
 import com.example.albakal.ui.LoginResult
 import com.example.albakal.ui.RegisterResult
+import com.example.albakal.ui.common.ApkDownloadDialog
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,6 +83,7 @@ fun AuthScreen(
 ) {
     var selectedTab by remember { mutableIntStateOf(0) } // 0: Login, 1: Register
     var showForgotPasswordDialog by remember { mutableStateOf(false) }
+    var showApkDialog by remember { mutableStateOf(false) }
 
     // Login Form State
     var loginEmail by remember { mutableStateOf("") }
@@ -148,7 +151,39 @@ fun AuthScreen(
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(14.dp))
+
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .clickable { showApkDialog = true }
+                    .testTag("apk_download_banner")
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Download,
+                        contentDescription = "APK",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "تثبيت وتحميل حزمة التطبيق (APK) ومستودع GitHub",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Tab Selector: تسجيل الدخول / حساب جديد
             TabRow(
@@ -820,5 +855,9 @@ fun AuthScreen(
                 }
             }
         )
+    }
+
+    if (showApkDialog) {
+        ApkDownloadDialog(onDismiss = { showApkDialog = false })
     }
 }
