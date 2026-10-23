@@ -1,0 +1,6 @@
+{
+  "name": "البقال",
+  "description": "تطبيق البقال للتجارة الإلكترونية والتسوق وربط العملاء والتجار الفعليين ولوحة تحكم الإدارة",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
